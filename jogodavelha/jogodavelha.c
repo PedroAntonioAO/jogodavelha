@@ -31,7 +31,7 @@ void printBoardWithOptions(){
         printf(" %d ",pos );
 
       else
-        printf(" %c" , board[1][j]);
+        printf(" %c " , board[i][j]);
 
       if ( j<2 )
         printf("|");
@@ -60,14 +60,65 @@ int isWinner() {
 
     if(board[0][2] == currentPlayer && board[1][1] == currentPlayer && board[2][0]  == currentPlayer )
       return 1;
+ return 0;
+  }
+}
+int isDraw() {
+  for(int i =0; i <3 ; i++)
+    for(int j =0; j<3 ; j++)
+      if (board[i][j]== ' ')
+        return 0;
+  return 1;
+}
+
+void switchPlayer(){
+  if (currentPlayer == 'X')
+    currentPlayer = 'O';
+  else
+    currentPlayer = 'X';
+}
+
+void makeMove() {
+  int pos;
+  while (1){
+    printf("jpgador %c,escolha uma posição entre 1-9: ",currentPlayer);
+    
+    scanf("%d", &pos);
+
+    if (pos >= 1 && pos <=9){
+      int row = (pos - 1)/3;
+      int col = (pos - 1) % 3;
+
+      if (board[row][col] == ' '){
+        board[row][col] = currentPlayer;
+        break;
+      }else
+        printf("essa posição já está ocupada.\n");
+    }else
+      printf("A posição %d é invalida, por favor tente denovo");
   }
 }
 
 int main() {
 
   initializeBoard();
+  while(1){
+    
+  
   printBoardWithOptions();
-
+  makeMove();
+    if(isWinner()){
+      printBoardWithOptions();
+      printf("jogador %c Venceu!\n ",currentPlayer);
+      break;
+    if (isDraw())  {
+      printBoardWithOptions();
+      printf("VELHA!");
+        break;
+    };
+    }
+    switchPlayer();
+  }
 return 0;
 }
 
